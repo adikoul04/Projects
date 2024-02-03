@@ -4,11 +4,6 @@ import math
 from data_processed import data_formatted as data
 from data_processed import results_formatted as results
 
-# print(data.shape)
-# print(data)
-# print(results.shape)
-# print(results)
-
 def initialize_parameters(n_x, n_h, n_y):
     """
     Argument:
@@ -17,7 +12,7 @@ def initialize_parameters(n_x, n_h, n_y):
     n_y -- size of the output layer
     
     Returns:
-    parameters -- python dictionary containing your parameters:
+    parameters -- python dictionary containing parameters:
                     W1 -- weight matrix of shape (n_h, n_x)
                     b1 -- bias vector of shape (n_h, 1)
                     W2 -- weight matrix of shape (n_y, n_h)
@@ -40,8 +35,6 @@ def initialize_parameters(n_x, n_h, n_y):
 
 def linear_forward(A, W, b):
     """
-    Implement the linear part of a layer's forward propagation.
-
     Arguments:
     A -- activations from previous layer (or input data): (size of previous layer, number of examples)
     W -- weights matrix: numpy array of shape (size of current layer, size of previous layer)
@@ -61,8 +54,6 @@ def linear_forward(A, W, b):
 
 def relu(Z):
     """
-    Implement the RELU function.
-
     Arguments:
     Z -- Output of the linear layer, of any shape
 
@@ -81,8 +72,6 @@ def relu(Z):
 
 def relu_backward(dA, cache):
     """
-    Implement the backward propagation for a single RELU unit.
-
     Arguments:
     dA -- post-activation gradient, of any shape
     cache -- 'Z' where we store for computing backward propagation efficiently
@@ -92,9 +81,9 @@ def relu_backward(dA, cache):
     """
     
     Z = cache
-    dZ = np.array(dA, copy=True) # just converting dz to a correct object.
+    dZ = np.array(dA, copy=True) # converting dz to a correct object.
     
-    # When z <= 0, you should set dz to 0 as well. 
+    # When z <= 0, sets dz to 0 as well. 
     dZ[Z <= 0] = 0
     
     assert (dZ.shape == Z.shape)
@@ -103,13 +92,10 @@ def relu_backward(dA, cache):
 
 def linear_activation_forward(A_prev, W, b):
     """
-    Implement the forward propagation for the LINEAR->ACTIVATION layer
-
     Arguments:
     A_prev -- activations from previous layer (or input data): (size of previous layer, number of examples)
     W -- weights matrix: numpy array of shape (size of current layer, size of previous layer)
     b -- bias vector, numpy array of shape (size of the current layer, 1)
-    activation -- the activation to be used in this layer, stored as a text string: "sigmoid" or "relu"
 
     Returns:
     A -- the output of the activation function, also called the post-activation value 
@@ -128,14 +114,12 @@ def linear_activation_forward(A_prev, W, b):
 
 def compute_cost(AL, Y):
     """
-    Implement the cost function defined by equation (7).
-
     Arguments:
-    AL -- probability vector corresponding to your label predictions, shape (1, number of examples)
-    Y -- true "label" vector (for example: containing 0 if non-cat, 1 if cat), shape (1, number of examples)
+    AL -- vector corresponding to the label predictions, shape (1, number of examples)
+    Y -- true "rating" vector, shape (1, number of examples)
 
     Returns:
-    cost -- cross-entropy cost
+    cost -- cost of the outputs compared to the true ratings with the current parameters
     """
     
     m = Y.shape[1]
@@ -143,14 +127,12 @@ def compute_cost(AL, Y):
     # Computes loss
     cost = (1./m) * np.sum(np.square(Y-AL), axis=1)
     
-    cost = np.squeeze(cost)      # To make sure your cost's shape is what we expect (e.g. this turns [[17]] into 17).
+    cost = np.squeeze(cost)      # To make sure the cost's shape is what we expect
     cost = math.sqrt(cost)
     return cost
 
 def linear_backward(dZ, cache):
     """
-    Implement the linear portion of backward propagation for a single layer (layer l)
-
     Arguments:
     dZ -- Gradient of the cost with respect to the linear output (of current layer l)
     cache -- tuple of values (A_prev, W, b) coming from the forward propagation in the current layer
@@ -172,12 +154,9 @@ def linear_backward(dZ, cache):
 
 def linear_activation_backward(dA, cache):
     """
-    Implement the backward propagation for the LINEAR->ACTIVATION layer.
-    
     Arguments:
     dA -- post-activation gradient for current layer l 
     cache -- tuple of values (linear_cache, activation_cache) we store for computing backward propagation efficiently
-    activation -- the activation to be used in this layer, stored as a text string: "sigmoid" or "relu"
     
     Returns:
     dA_prev -- Gradient of the cost with respect to the activation (of the previous layer l-1), same shape as A_prev
@@ -194,28 +173,35 @@ def linear_activation_backward(dA, cache):
 
 def update_parameters(params, grads, learning_rate):
     """
-    Update parameters using gradient descent
-    
     Arguments:
-    params -- python dictionary containing your parameters 
-    grads -- python dictionary containing your gradients, output of L_model_backward
+    params -- python dictionary containing parameters 
+    grads -- python dictionary containing gradients, output of L_model_backward
     
     Returns:
-    parameters -- python dictionary containing your updated parameters 
+    parameters -- python dictionary containing updated parameters 
                   parameters["W" + str(l)] = ... 
                   parameters["b" + str(l)] = ...
     """
     parameters = copy.deepcopy(params)
     L = len(parameters) // 2 # number of layers in the neural network
 
-    # Update rule for each parameter. Use a for loop.
+    # Update rule for each parameter
     for l in range(L):
         parameters["W" + str(l+1)] = params.get("W" + str(l+1))-grads.get("dW" + str(l+1))*learning_rate
         parameters["b" + str(l+1)] = params.get("b" + str(l+1))-grads.get("db" + str(l+1))*learning_rate
         
     return parameters
 
-def predict(parameters):
+def predict(params):
+    """
+    Arguments:
+    params -- python dictionary containing parameters 
+
+    Returns:
+    Tells the user the predicted rating of the car based on the entered statistics
+    """
+
+    # Asks the user for statistics of the car
     name = input('Enter name of car: ')
     year = input('What year was it made: ')
     speed = input('What is its top speed (mph): ')
@@ -259,6 +245,7 @@ def predict(parameters):
     elif(tireanswer=='Off-Road'):
         tire = 5.
 
+    # Uses the entered statistics to create a vector to use in forward propagation
     input_layer = [[float(year)],
                    [float(speed)],
                    [float(accel)],
@@ -271,15 +258,19 @@ def predict(parameters):
                    [drive],
                    [tire]]
     
-    W1 = parameters["W1"]
-    b1 = parameters["b1"]
-    W2 = parameters["W2"]
-    b2 = parameters["b2"]
+    W1 = params["W1"]
+    b1 = params["b1"]
+    W2 = params["W2"]
+    b2 = params["b2"]
 
+
+    # Calculates the predicted rating using linear activation
     A1, cache1 = linear_activation_forward(input_layer, W1, b1)
     A2, cache2 = linear_activation_forward(A1, W2, b2)
 
     answer = np.squeeze(A2)
+
+    # Tells the user the rating of their car
     print("\nThe "+name+" would have an RQ cost of about "+str(answer))
     if(answer<7):
         print("This car would recieve an F rating")
@@ -295,4 +286,3 @@ def predict(parameters):
          print("This car would recieve an A rating")
     else:
         print("This car would recieve an S rating")
-        
