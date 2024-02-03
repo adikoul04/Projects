@@ -1,10 +1,13 @@
 import numpy as np
 
+# Initializes the matrixes for the training data and the already known ratings
 data = np.zeros((435, 11))
 results = np.zeros((435, 1))
 
 f = open(".venv/Top_Drives_Neural_Network/data.txt", "r")
 f.readline()
+
+# Converts the data from the txt file to a matrix
 for i in range(435):
     dataStr = f.readline()
     split = dataStr.split()
@@ -54,11 +57,13 @@ for i in range(435):
     else:
         raise Exception("Drive Style not an option")
 
+    # Converts matrix to matrix of floats
     as_num = [float(numeric_string) for numeric_string in split]
     results[i][0] = as_num[11]
     for j in range(11):
         data[i][j] = as_num[j]
 
+# Transposes the matrices so they have the correct dimensions to train the model
 data_formatted = data.T
 results_formatted = results.T
 f.close()
