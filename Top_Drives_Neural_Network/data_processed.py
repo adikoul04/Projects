@@ -4,7 +4,7 @@ import numpy as np
 data = np.zeros((435, 11))
 results = np.zeros((435, 1))
 
-f = open(".venv/Top_Drives_Neural_Network/data.txt", "r")
+f = open("Top_Drives_Neural_Network/data.txt", "r")
 f.readline()
 
 # Converts the data from the txt file to a matrix
