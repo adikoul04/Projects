@@ -50,7 +50,7 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Car Racing Game")
 
 # Load car image
-car_image = pygame.image.load('Car_driving_game/Car_bit_art.png')
+car_image = pygame.image.load('Car_Driving_RL_Model/Car_bit_art.png')
 car_image = pygame.transform.scale(car_image, (CAR_WIDTH, CAR_HEIGHT))
 
 # Car parameters
@@ -77,25 +77,25 @@ actions = ["ACCELERATE", "BRAKE", "LEFT", "RIGHT", "NEUTRAL"]
 q_table = {}
 
 # Load Q-table, iteration counter, average angle, and best lap time if they exist
-q_table_path = 'Car_driving_game/q_table_final.pkl' if initial_mode == "test" else 'Car_driving_game/q_table.pkl'
+q_table_path = 'Car_Driving_RL_Model/q_table_final.pkl' if initial_mode == "test" else 'Car_Driving_RL_Model/q_table.pkl'
 if os.path.exists(q_table_path):
     with open(q_table_path, 'rb') as f:
         q_table = pickle.load(f)
 
-if os.path.exists('Car_driving_game/iterations.pkl'):
-    with open('Car_driving_game/iterations.pkl', 'rb') as f:
+if os.path.exists('Car_Driving_RL_Model/iterations.pkl'):
+    with open('Car_Driving_RL_Model/iterations.pkl', 'rb') as f:
         iterations = pickle.load(f)
 else:
     iterations = 0
 
-if os.path.exists('Car_driving_game/angles.pkl'):
-    with open('Car_driving_game/angles.pkl', 'rb') as f:
+if os.path.exists('Car_Driving_RL_Model/angles.pkl'):
+    with open('Car_Driving_RL_Model/angles.pkl', 'rb') as f:
         angles = pickle.load(f)
 else:
     angles = deque(maxlen=50)
 
-if os.path.exists('Car_driving_game/best_lap_time.pkl'):
-    with open('Car_driving_game/best_lap_time.pkl', 'rb') as f:
+if os.path.exists('Car_Driving_RL_Model/best_lap_time.pkl'):
+    with open('Car_Driving_RL_Model/best_lap_time.pkl', 'rb') as f:
         best_lap_time = pickle.load(f)
 else:
     best_lap_time = None
@@ -198,7 +198,7 @@ def update_q_table(state, action, reward, next_state, current_angle):
 
     # Overwrites q_table.pkl if in "train" mode
     if test_or_train == "train":
-        with open('Car_driving_game/q_table.pkl', 'wb') as f:
+        with open('Car_Driving_RL_Model/q_table.pkl', 'wb') as f:
             pickle.dump(q_table, f)
 
 # Calculates the angle around the track that the car has driven
@@ -362,9 +362,9 @@ while running:
             # Overwrites best_lap_time.pkl and q_table_final.pkl if new best lap time achieved
             if best_lap_time is None or lap_time < best_lap_time:
                 best_lap_time = lap_time
-                with open('Car_driving_game/best_lap_time.pkl', 'wb') as f:
+                with open('Car_Driving_RL_Model/best_lap_time.pkl', 'wb') as f:
                     pickle.dump(best_lap_time, f)
-                with open('Car_driving_game/q_table_final.pkl', 'wb') as f:
+                with open('Car_Driving_RL_Model/q_table_final.pkl', 'wb') as f:
                     pickle.dump(q_table, f)
         if test_or_train == "train":
             # Updates the average angle of the last 50 iterations if dynamic_vars
@@ -374,9 +374,9 @@ while running:
 
             iterations += 1
             # Updates angles.pkl and iterations.pkl if needed
-            with open('Car_driving_game/angles.pkl', 'wb') as f:
+            with open('Car_Driving_RL_Model/angles.pkl', 'wb') as f:
                 pickle.dump(angles, f)
-            with open('Car_driving_game/iterations.pkl', 'wb') as f:
+            with open('Car_Driving_RL_Model/iterations.pkl', 'wb') as f:
                 pickle.dump(iterations, f)
 
         # Resets car
