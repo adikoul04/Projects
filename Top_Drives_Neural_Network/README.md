@@ -3,6 +3,8 @@
 ## Overview
 I am into cars, and recently I have been playing a mobile game called Top Drives. In this game, the player aquires cars which each have a rating based on certain stats about them. Some of these stats include power, weight, drivetrain, and more. I recently took the "Neural Networks and Deep Learning" course by DeepLearning.AI through Coursera. I wanted to use what I had learned in the course toward my own project, so I decided to try to build a neural network that trains based on the stats of in-game cars and predicts the ratings of cars based on stats entered by the user.
 
+If you want to see this project in action, check it out on my [website](https://adikoul04.github.io/projects.html).
+
 ## Creating the Network
 I was too lazy to create a table with all the data of every car in the game, so I found an already made spreadsheet on Google. I took my data from [here](https://docs.google.com/spreadsheets/d/1EAv9sduSWa_cbrYYWVnfICaPGGrhq6jYtr9XfJKtHs8/htmlview). Big thanks to Evan C for providing this data. **Disclamer:** This data is as of September 2019, so it is not current. Also, the RQ rating scale in this table is different than what it is currently. However, this data was still useful in creating the network. Additionally, the spreadsheet does not seem finished as all of the cars do not have data for all of the categories, so I limited my training set to 435 vehicles that had all of the data.
 
