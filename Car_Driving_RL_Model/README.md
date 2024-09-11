@@ -3,6 +3,8 @@
 ## Overview
 I am interested in AI/ML, and recently I watched a video where a Youtuber created an AI to play the car video game _Trackmania_ through reinforcement learning. I thought this was really cool and it inspired me to pursue a similar project (although much simpler), so I developed an RL model that learns to drive a car in a basic game I created using pygame.
 
+If you want to see this project in action, check it out on my [website](https://adikoul04.github.io/projects.html).
+
 ## Creating the Game
 Before creating a learning model, I first needed an environment which the model could learn in. I created a simple game which spawns a car on a circular track. The user can use the arrow keys to drive the car and try to achieve the fastest lap time possible. I did not put too much effort into making the game "good" in any way; my primary focus was building the model and I simply needed an environment which includes a car that could drive. 
 
